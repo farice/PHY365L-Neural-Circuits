@@ -314,11 +314,7 @@ and drop all capacitors again
 \includegraphics[width=0.8\textwidth]{exercise1-6}
 \end{figure}
 
-In this case, we have the previous voltage divider in parallel with the rightmost wire and components. 
-
-$I_1 = \frac{5}{1*10^3 + 100 * 10^3}$
-
-$I_2 = -\frac{0.4}{600 + 100 * 10^3}$
+We can use the method of Norton, first computing $R_{N}$ by shorting all voltage sources and opening all current sources. Then, we have three resistors in parallel with $R_{N} = 373 \Omega$. Next, we compute $I_N$ by adding a short wire between the top and bottom node. This then gives current $I_N = 0.02 mA + 5 mA - 0.4/0.6 mA = 4.35 mA$. Hence, we have $V_{Th} = 1.6 V$.
 
 \subsection{Results and Discussion}
 
