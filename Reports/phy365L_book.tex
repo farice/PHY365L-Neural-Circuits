@@ -91,7 +91,7 @@ The essence of nervous system function is signaling, or transferring information
 
 The part of the neuron responsible for transmitting information from one part of the cell to another is known as the axon. Axons are thin tube-like structures that arise from the neuronal cell body. There is a voltage difference across the axonal membrane, and information is carried in the axon in the form of rapid changes in this voltage difference. These voltage changes which are referred to as action potentials, travel rapidly along the axon from the cell body toward the distal part of the axon. We seek to model these action potentials, as they would be measured electrically at the axon, with circuits.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics{neuron-structure.jpg}
 \end{figure}
@@ -116,7 +116,7 @@ In our project, we seek to capture the important qualitative behaviors of the ax
 
 The Hodgkin-Huxley model models the cell membrane as a simple circuit. 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.5]{hhmodel}
     \caption{Hodgkin-Huxley Circuit}
@@ -187,7 +187,7 @@ We can also rewrite equation (\ref{eq:dpdt}) as the following
 
 The combined system of differential equations is shown in the next section. Furthermore, in Figure \ref{fig:inf} we show the values of $m_\infty$ and $n_\infty$ derived using the equations above. 
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 	\includegraphics[height=5cm]{gating.png}
 	\caption{$m_{\infty}$ (blue) and $n_{\infty}$ (orange)}
@@ -198,7 +198,7 @@ The combined system of differential equations is shown in the next section. Furt
 
 Maeda and Makino \cite{maeda2000pulse} show how to model a neuron using 3 transistors for a FitzHugh-Nagumo type neuron. In the FitzHugh-Nagumo model, one simplifies the Hodgkin-Huxley formulation by replacing the fast Na current of the H-H model with a simplified fast, depolarizing, activation process. Furthermore, one replaces the slow $Na$ inactivation and slow, repolarizing, $K$ current by a single slow inactivation process. By adding one more repolarizing process, modeled by two more transistors, they can produce a neuron with bursting behavior. 
 
-Evidently, the state variables for the model are $V$, $m$, $h$, and $n$. Hence, we can write
+The state variables for the model are $V$, $m$, $h$, and $n$. Hence, we can write
 
 \begin{align*}
     C\frac{dV}{dt} &= I_{ext} -\bar{G}_{Na}m^3h(V-E_{Na}) -\bar{G}_{K}n^4(V-E_{K})  -\bar{G}_{L}m^3h(V-E_{L}) \\
@@ -209,7 +209,7 @@ Evidently, the state variables for the model are $V$, $m$, $h$, and $n$. Hence, 
 
 While analyzing a four-dimensional nonlinear system is certainly feasible, it is difficult to then visualize our results. Furthermore, the number of combinations of parameters grows exponentially with each new parameter introduced.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \begin{subfigure}{.5\textwidth}
 	\centering
@@ -235,7 +235,7 @@ From Equation \ref{eq:time}, it's clear that the time constants, $\tau_i$ vary w
 
 The assumption of taking $h$ to be constant can be judged visually in Figure \ref{fig:keen}, borrowed from Keener and Sneyd, which shows values of the unapproximated model\cite{keener}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \begin{subfigure}{0.7\textwidth}
 	\centering
@@ -293,7 +293,6 @@ Clearly, we have
 (100k\Omega)(0.02 mA) = 	2V
 \end{align*}
 
-
 Now, let's turn on switch $A$
  
  \begin{figure}[H]
@@ -314,7 +313,7 @@ $$\frac{100}{1+100} * 5V = 4.95 V$$
 
 Now, let's turn on the switch $B$
  
- \begin{figure}[H]
+ \begin{figure}[h]
 \includegraphics[width=0.8\textwidth]{exercise1-5}
 \end{figure}
 
@@ -331,7 +330,7 @@ We can use the method of Norton, first computing $R_{N}$ by shorting all voltage
 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-pulse}, finding no need for modification\footnote{However, recall that instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.}. Our circuit exhibited the expected pattern of an action potential in  a pulse type neuron.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \label{fig:pulse}
 \centering
 \includegraphics[width=0.7\textwidth]{neuron.jpeg}	
@@ -346,7 +345,7 @@ Furthermore, we see that the action potential reaches its maximum at approximate
 
 \subsection{Theory}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{burster_heart_cell}	
 \caption{Burster Heart Cell}
@@ -360,7 +359,7 @@ Throughout this process the $1 \mu F$ capacitor continues to charge because the 
 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-burst}, finding no need for modification.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \label{fig:maeda-burst}
 \centering
 \includegraphics[width=0.7\textwidth]{burster_osc}
@@ -370,6 +369,10 @@ We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-b
 As anticipated, we see the usual action potential magnitudes associated with the pulse type neuron ($4V$ maximum, $1V$ for the slow charge peak). However, we also see oscillatory "bursting" behavior during the fast charge phase.
 
 \chapter{Synapses}
+
+\section{Introduction}
+
+\subsection{Overview}
 
 Information transfer from one part of the nervous system to another involves a highly specialized structure of the neuron known as the synapse. There exist two types of synapses: chemical synapses and electrical synapses. 
 
@@ -381,15 +384,11 @@ A presynaptic neuron may increase the probability of an action potential occurri
 
 On the opposite end, neurotransmitters such as GABA can cause hyper-polarization in the postsynaptic cell, a phenomenon known as an inhibitory postsynaptic potential (IPSP).
 
-\section{Introduction}
-
-\subsection{Overview}
-
 \section{Circuit 1: Excitatory Synapse}
 
 \subsection{Theory}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{excitatory_circuit}	
 \caption{EPSP Circuit from \cite{levitan2015neuron}}
@@ -403,7 +402,7 @@ When the current on the top node of the synapse reaches sufficient voltage, the 
 
 \subsection{Results and Discussion}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{excitatory.jpg}
 \caption{Oscilloscope for Excitatory Synapse}
@@ -419,7 +418,7 @@ The magnitude of the action potential remained roughly $4V$ as for the pulse typ
 
 \subsection{Theory}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{inhibitory_circuit}	
 \caption{IPSP Circuit from \cite{levitan2015neuron}}
@@ -431,7 +430,7 @@ We see that we have two pulse type neurons from the first chapter connected by a
 
 \subsection{Results and Discussion}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{inhibitory.jpg}	
 \caption{Oscilloscope for Inhibitory Synapse}
@@ -459,7 +458,7 @@ The very simplest circuit that can generate alternating contraction and relaxati
 An action potential in an upswing neuron generates an inhibitory postsynaptic potential (IPSP) in a downswing neuron. Because of post-inhibitory rebound, the downswing neuron generates an action potential at the end of the IPSP. This in turn triggers an IPSP in the upswing neuron.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{ipsp.png}	
 \caption{p. 461 of \cite{levitan2015neuron}}
@@ -469,7 +468,7 @@ An action potential in an upswing neuron generates an inhibitory postsynaptic po
 
 \subsection{Theory}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \label{fig:pattern}
 \centering
 \includegraphics[width=\textwidth]{pattern_circuit}	
