@@ -91,6 +91,12 @@ The essence of nervous system function is signaling, or transferring information
 
 The part of the neuron responsible for transmitting information from one part of the cell to another is known as the axon. Axons are thin tube-like structures that arise from the neuronal cell body. There is a voltage difference across the axonal membrane, and information is carried in the axon in the form of rapid changes in this voltage difference. These voltage changes which are referred to as action potentials, travel rapidly along the axon from the cell body toward the distal part of the axon. We seek to model these action potentials, as they would be measured electrically at the axon, with circuits.
 
+\begin{figure}[H]
+\centering
+\includegraphics{neuron-structure.jpg}
+\end{figure}
+
+
 Neurons exhibit a membrane potential across their plasma membranes which results form the unequal distribution of electrical charge carried by ions on the two sides of the membrane. When an axon is at rest the value of the membrane potential is called the resting potential. In neurons the resting potential is usually in the range of $-40$ to $-90 mV$. Note that membrane potentials are expressed relative to the extracellular fluid. When the membrane potential is less negative than the resting potential, the cell is said to be depolarized; when it is more negative, the cell is hyperpolarized.
 
 Action potentials are fundamental to a neuron's ability to transfer information; however, there are additional aspects of its electrical properties which shape neuronal input and output. For example, some neurons that fire spontaneously in the absence of external simulation do not fire at regular intervals, but instead generate bursts of action potentials that are separated by the hyperpolarizations of the membrane. Such cells are terms "bursting" neurons \cite{levitan2015neuron}.
@@ -99,12 +105,12 @@ These bursts are used in at least two known ways \cite{levitan2015neuron}:
 
 \begin{enumerate}
 \item To generate rhythmic behaviors. For example, breathing, walking, swimming, and chewing food.	
-\item To secrete neurohormones. For example, neurons located in the hypothalamic region of the mammalian brain individually contain either vasopressin or oxyocin. These hormones control water retention and lactation, respectively. Interestingly, it appears that the bursting pattern is more effective than a steady pacing pattern of firing as a stimulus to the intracellular mechanism which generates peptide release.
+\item To secrete neurohormones. Neurohormones are signaling molecules that are released by specialized neurons and transported by the circulatory system to regulate physiology and behavior. For example, neurons located in the hypothalamic region of the mammalian brain individually contain either vasopressin or oxyocin. These hormones control water retention and lactation, respectively. Interestingly, it appears that the bursting pattern is more effective than a steady pacing pattern of firing as a stimulus to the intracellular mechanism which generates peptide release.
 \end{enumerate}
 
 \subsection{Mathematical Modeling}
 
-Alan Lloyd Hodgkin and Andrew Huxley, in 1963, won the Nobel Prize in Physiology and Medicine for their work developing the Hodgkin-Huxley (H-H) Equations, equations that modeled to incredible accuracy the propagation of action potentials through a squid axon. 
+Alan Lloyd Hodgkin and Andrew Huxley, in 1963, won the Nobel Prize in Physiology and Medicine for their work developing the Hodgkin-Huxley (H-H) equations, equations that modeled to incredible accuracy the propagation of action potentials through a squid axon. 
 
 In our project, we seek to capture the important qualitative behaviors of the axon system using electronics. Before speaking of electronics, it is prudent to develop differential equations which simplify the H-H model.
 
@@ -119,9 +125,10 @@ The Hodgkin-Huxley model models the cell membrane as a simple circuit.
 
 Two voltage-dependent sodium and potassium channels allow the ions to flow through the membrane. The membrane has a capacitance indicated by $c_m$. Additionally, the sodium and potassium channels have a conductance parameter $G_{Na}$ and $G_K$, as well as a leakage conductance as shown. These conductance parameters can be modeled by various functions as will be shown later, and model the buildup in the passage of ions that create the action potential. The circuit is in parallel to mimic the axon. 
 
-Using classic current conservation in a circuit, and adding the parameter of an external current $I_{ext}$, we can derive the current equation for the cell.
+Using classic current conservation in a circuit, and adding the parameter $I_{ext}$ of external current, we can derive the current equation for the cell.
 
 \begin{align*}
+I_{ion} := \sum I_{K} + I_{Na} + I_L \\
     c_m\frac{dV_m}{dt} + I_{ion} = I_{ext}
 \end{align*}
 
@@ -133,6 +140,8 @@ The derivation of each ionic current through the different channels depends on t
     I_{ion} = G_{ion}(V_{m}-E_{ion})
 \end{align*}
 
+where $G_{ion}$ is the conductance of the ionic channels and $E_{ion}$ the corresponding potential.
+
 The physical meaning of conductance is the probability that the channels that the ions pass through will be considered open, or when the gates that the ions can pass through are all permissive in that particular ion channel. This is dependent on the voltage of the cell membrane. 
 
 Hodgkin and Huxley used three different types of gates to model the conductance channels. Using, $m$, $h$, and $n$ as different types of gates (iterations of $p$), $G_{Na}$ and $G_K$ are modeled as followed.
@@ -142,14 +151,16 @@ Hodgkin and Huxley used three different types of gates to model the conductance 
     G_{K} &= \bar{G}_{K}n^4
 \end{align*}
 
-Where $m$, $h$, and $n$ follow the following differential equation, which is derived on the open fraction of gates, $p$:
+where $\bar{G}_i$ are constants.
+
+Define the following differential equation given in terms of $p \equiv p(V, t)$ which is interpreted as a fraction of open gates, and $a(V), b(V)$ which are functions of voltage to be fit empirically. 
 
 \begin{align}
 \label{eq:dpdt}
     \frac{dp}{dt} = a(V)(1-p) - b(V)p
 \end{align}
 
-Hodgkin and Huxley discovered that as they kept the voltage constant, the conductance of the channels increased steadily to a maximum value. They used this experimental data to achieve equations for the time step of increase of $p$.
+Now, let us consider three separate solutions $p$ to this equation which we term $m, h, n$. Hodgkin and Huxley discovered that as they kept the voltage constant, the conductance of the channels increased steadily to a maximum value. They used this experimental data to achieve equations for the time step of increase of $p$. Note that solutions to the posed differential equation are exponentials. Hence, we can speak of time constants in the usual sense (reaching $1/e$ of the steady state $t \rightarrow \infty$ value).
 
 \begin{align}
 \label{eq:time}
@@ -168,7 +179,7 @@ Where $p_{\infty}(V)$ is the steady state value at an given voltage and ${\tau_p
     &b_h(V) = \frac{1}{\frac{\exp(30-V)}{10}+1}
 \end{align*}
 
-We can also simplify equation (\ref{eq:dpdt}) to the following.
+We can also rewrite equation (\ref{eq:dpdt}) as the following
 
 \begin{align*}
     \frac{dp}{dt} = \frac{p_{\infty}(V)-p}{\tau_p(V)}
