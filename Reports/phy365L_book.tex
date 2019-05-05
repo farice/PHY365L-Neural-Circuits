@@ -127,10 +127,11 @@ Two voltage-dependent sodium and potassium channels allow the ions to flow throu
 
 Using classic current conservation in a circuit, and adding the parameter $I_{ext}$ of external current, we can derive the current equation for the cell.
 
-\begin{align*}
+\begin{align}
 I_{ion} := \sum I_{K} + I_{Na} + I_L \\
     c_m\frac{dV_m}{dt} + I_{ion} = I_{ext}
-\end{align*}
+\label{eq:conduct}
+\end{align}
 
 In our particular model, we will assume that $G_L$ is constant and the capacitance $c_m$ as well. $V_m$ is the potential within the cell membrane, and $I_{ion}$ is the net ionic current within the cell.
 
@@ -144,31 +145,34 @@ where $G_{ion}$ is the conductance of the ionic channels and $E_{ion}$ the corre
 
 The physical meaning of conductance is the probability that the channels that the ions pass through will be considered open, or when the gates that the ions can pass through are all permissive in that particular ion channel. This is dependent on the voltage of the cell membrane. 
 
-Hodgkin and Huxley used three different types of gates to model the conductance channels. Using, $m$, $h$, and $n$ as different types of gates (iterations of $p$), $G_{Na}$ and $G_K$ are modeled as followed.
+Define the following differential equation given in terms of $p \equiv p(V, t)$ which is interpreted as a fraction of open gates, and $a(V), b(V)$ which are functions of voltage to be fit empirically. 
+
+\begin{align}
+    \frac{dp}{dt} = a(V)(1-p) - b(V)p
+    \label{eq:dpdt}
+\end{align}
+
+Now, let us consider three separate solutions $p$ to this equation which we term $m, h, n$. 
+
+Hodgkin and Huxley interpreted $m, h, n$ as three different types of gates to model the conductance channels. The conductance $G_{Na}$ and $G_K$ are then modeled as
 
 \begin{align*}
     G_{Na} &= \bar{G}_{Na}m^3h\\
     G_{K} &= \bar{G}_{K}n^4
+    \label{eq:gating}
 \end{align*}
 
 where $\bar{G}_i$ are constants.
 
-Define the following differential equation given in terms of $p \equiv p(V, t)$ which is interpreted as a fraction of open gates, and $a(V), b(V)$ which are functions of voltage to be fit empirically. 
+Hodgkin and Huxley discovered that as they kept the voltage constant, the conductance of the channels $m, h, n$ increased steadily to a maximum value. They used this experimental data to achieve equations for the time step of increase of $p$. Note that solutions to the posed differential equation are exponentials given that Equation \ref{eq:dpdt} is first order differential equation linear in $p$. Hence, we can speak of time constants in the usual sense (reaching $1/e$ of the steady state $t \rightarrow \infty$ value).
 
 \begin{align}
-\label{eq:dpdt}
-    \frac{dp}{dt} = a(V)(1-p) - b(V)p
-\end{align}
-
-Now, let us consider three separate solutions $p$ to this equation which we term $m, h, n$. Hodgkin and Huxley discovered that as they kept the voltage constant, the conductance of the channels increased steadily to a maximum value. They used this experimental data to achieve equations for the time step of increase of $p$. Note that solutions to the posed differential equation are exponentials. Hence, we can speak of time constants in the usual sense (reaching $1/e$ of the steady state $t \rightarrow \infty$ value).
-
-\begin{align}
-\label{eq:time}
     p_{\infty}(V) &= \frac{a_p(V)}{a_p(V) + b_p(V)} \\
     \tau_p(V) &= \frac{1}{a_p(V) + b_p(V)} 
+    \label{eq:time}
 \end{align}
 
-Where $p_{\infty}(V)$ is the steady state value at an given voltage and ${\tau_p}(V)$ are time constants of response of the gates, in relation to $p$ growing to its steady state value. These constants can be experimentally fit to data and using Equation (\ref{eq:dpdt}) we can find $a_p(V)$ and $b_p(V)$. Thus, the final equations for the rate constants are as follows:
+where $p_{\infty}(V)$ is the steady state value at an given voltage and ${\tau_p}(V)$ are time constants of response of the gates, in relation to $p$ growing to its steady state value. These constants can be experimentally fit to data and using Equation (\ref{eq:dpdt}) we can find $a_p(V)$ and $b_p(V)$. Thus, the final equations for the rate constants are as follows:
 
 \begin{align*}
     a_m(V) &= \frac{0.1(25-V)}{\exp(\frac{25-V}{10})-1}
@@ -198,7 +202,7 @@ The combined system of differential equations is shown in the next section. Furt
 
 Maeda and Makino \cite{maeda2000pulse} show how to model a neuron using 3 transistors for a FitzHugh-Nagumo type neuron. In the FitzHugh-Nagumo model, one simplifies the Hodgkin-Huxley formulation by replacing the fast Na current of the H-H model with a simplified fast, depolarizing, activation process. Furthermore, one replaces the slow $Na$ inactivation and slow, repolarizing, $K$ current by a single slow inactivation process. By adding one more repolarizing process, modeled by two more transistors, they can produce a neuron with bursting behavior. 
 
-The state variables for the model are $V$, $m$, $h$, and $n$. Hence, we can write
+The state variables for the model are $V$, $m$, $h$, and $n$ defined by Equation \ref{eq:dpdt} as before. Hence, we can combine Equations \ref{eq:conduct} and \ref{eq:gating}.
 
 \begin{align*}
     C\frac{dV}{dt} &= I_{ext} -\bar{G}_{Na}m^3h(V-E_{Na}) -\bar{G}_{K}n^4(V-E_{K})  -\bar{G}_{L}m^3h(V-E_{L}) \\
@@ -207,14 +211,14 @@ The state variables for the model are $V$, $m$, $h$, and $n$. Hence, we can writ
     \frac{dn}{dt} &= \frac{n_{\infty}(V)-n}{\tau_n(V)} 
 \end{align*}
 
-While analyzing a four-dimensional nonlinear system is certainly feasible, it is difficult to then visualize our results. Furthermore, the number of combinations of parameters grows exponentially with each new parameter introduced.
+While analyzing a four-dimensional nonlinear system is certainly feasible, it is difficult to then visualize our results. Furthermore, the number of combinations of parameters grows exponentially with each new parameter introduced. Hence, we seek to reduce the model complexity.
 
 \begin{figure}[h]
 \centering
 \begin{subfigure}{.5\textwidth}
 	\centering
 	\includegraphics[height=5cm]{keener1.png}
-	\caption{Gate Variables}
+	\caption{Gate Variables. From equation \ref{eq:gating} we see that this diagram depicts evolution in conductance of the circuit for each gate, up to a constant factor.}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
 	\centering
@@ -233,29 +237,7 @@ From Equation \ref{eq:time}, it's clear that the time constants, $\tau_i$ vary w
     \frac{dn}{dt} &= \frac{n_{\infty}-n}{\tau_n} 
 \end{align*}
 
-The assumption of taking $h$ to be constant can be judged visually in Figure \ref{fig:keen}, borrowed from Keener and Sneyd, which shows values of the unapproximated model\cite{keener}.
-
-\begin{figure}[h]
-\centering
-\begin{subfigure}{0.7\textwidth}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fastFast_nullc.png}
-	\caption{$I_{ext}=0$ nullclines}
-\end{subfigure}
-\begin{subfigure}{0.7\textwidth}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fastFast.png}
-	\caption{$I_{ext}=0$ action potential}
-\end{subfigure}
-	\caption{V-nullcline (Red) and n-nullcline (Green) for $I_{ext}$ on and off of simple constant $h$ model, with associated action potentials}
-	\label{fig:first}
-\end{figure}
-
-In Figure \ref{fig:first}, we see the result of the Fitzhugh-Nagumo approximation. We can see that there are three potential intersections of the nullclines (two are present in the bottom left but difficult to visualize due to their close proximity), implying that there are excited and relaxed fixed points. If one looks closely at the vector field, the excited equilibrium (upper-right) appears to be attracting, and in the lower-left one equilibrium seems to be attracting while the other is a saddle. We'll call the one that is attracting in the lower-left the rest equilibrium, since it should correspond to the action potential going to rest. We also see that the action potential looks qualitatively different than it does in the unsimplified H-H model. The model seems less than ideal, but is a good initial step. 
-
-We could treat $n$ and $h$ as bifurcation parameters. For example, we can use our physical intuition to consider the effects of increasing $n$ and decreasing $h$. Evidently, increasing $n$ corresponds to activation of K$^+$ conductance and deactivation of Na$^+$ conductance. As a result, we could predict the disappearance of the fixed point that corresponds to an excited state. Indeed, one can show that there is a saddle node bifurcation in this scenario resulting in the disappearance of the saddle and excited fixed points.\cite{keener}.
-
-The neurons we construct in this project follow from this approximation.
+The assumption of taking $h$ to be constant can be judged visually in Figure \ref{fig:keen}, borrowed from Keener and Sneyd, which shows values of the unapproximated model\cite{keener}. Indeed, the neurons we construct in this project follow from this approximation.
 
 \section{Circuit 1: A Pulse Type Neuron}
 \label{sec:pulse-neuron}
@@ -265,10 +247,10 @@ The neurons we construct in this project follow from this approximation.
  We begin by considering a circuit with the following structure
  
 \begin{figure}[H]
-\label{fig:maeda-pulse}
 \centering
 \includegraphics[width=0.8\textwidth]{exercise1-0}
 \caption{"A pulse type neuron model" from \cite{maeda2000pulse}}
+\label{fig:maeda-pulse}
 \end{figure}
 
 In our experiment, instead of applying a constant current source we added a $200k\Omega$ resistor above the $5V$ voltage source. Nevertheless, the analysis follows similarly.
@@ -326,15 +308,23 @@ and drop all capacitors again
 
 We can use the method of Norton, first computing $R_{N}$ by shorting all voltage sources and opening all current sources. Then, we have three resistors in parallel with $R_{N} = 373 \Omega$. Next, we compute $I_N$ by adding a short wire between the top and bottom node. This then gives current $I_N = 0.02 mA + 5 mA - 0.4/0.6 mA = 4.35 mA$. Hence, we have $V_{Th} = 1.6 V$.
 
+Therefore, by modeling our circuit in terms of changes in voltage equilibria induced by which transistors are open (viewing transistors as ideal switches), we have located three different steady states. The dynamic which determines the rate at which the circuit evolves towards the particular equilibrium dictated by the open switches is determined by the capacitance values because these define the time constants of the resistor-capacitor subcircuits (of course resistance can be changed to move the time constant as well). Finally, the transition between which switches are open depend on the characteristics of the transistors (e.g. NPN vs. PNP and $\alpha, \beta$).
+
+In the context of our circuit, we can then describe the expected behavior visually below.
+
+\begin{figure}	
+\end{figure}
+ 
+
 \subsection{Results and Discussion}
 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-pulse}, finding no need for modification\footnote{However, recall that instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.}. Our circuit exhibited the expected pattern of an action potential in  a pulse type neuron.
 
 \begin{figure}[h]
-\label{fig:pulse}
 \centering
 \includegraphics[width=0.7\textwidth]{neuron.jpeg}	
 \caption{Oscilloscope for Pulse Type Neuron}
+\label{fig:pulse}
 \end{figure}
 
 From the Figure \ref{fig:pulse}, we see that the slow repolarization current (associated with the charging of the $0.5 \mu F$ capacitor) increases the voltage just short of $1 V$ before the fast current opens, falling short of the $2V$ equilibrium theoretical prediction. This is because the transistor which opens the fast current ($A$) is opened before this equilibrium can be reached.
@@ -360,10 +350,10 @@ Throughout this process the $1 \mu F$ capacitor continues to charge because the 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-burst}, finding no need for modification.
 
 \begin{figure}[h]
-\label{fig:maeda-burst}
 \centering
 \includegraphics[width=0.7\textwidth]{burster_osc}
 \caption{Oscilloscope for Burst Neuron}
+\label{fig:maeda-burst}
 \end{figure}
 
 As anticipated, we see the usual action potential magnitudes associated with the pulse type neuron ($4V$ maximum, $1V$ for the slow charge peak). However, we also see oscillatory "bursting" behavior during the fast charge phase.
@@ -469,10 +459,10 @@ An action potential in an upswing neuron generates an inhibitory postsynaptic po
 \subsection{Theory}
 
 \begin{figure}[h]
-\label{fig:pattern}
 \centering
 \includegraphics[width=\textwidth]{pattern_circuit}	
 \caption{Alternate Bursting Circuit from \cite{maeda2000pulse}}
+\label{fig:pattern}
 \end{figure}
 
 Here, we consider the circuit in Figure \ref{fig:pattern}. However, instead of using burster cells (as they are depicted in the figure), we use ordinary neuronal cells as in Section \ref{sec:pulse-neuron}.
@@ -482,6 +472,30 @@ In the previous chapter, we saw a circuit with a single diode driving current fr
 \subsection{Results and Discussion}
 
 We were unable to construct a circuit which displayed the expected pattern. Instead, our pattern remained similar to the one in the inhibitory synapse circuit of the previous chapter. This indicates that only one neuronal cell was inhibiting the other, despite the two synapses consisting of equivalent circuits. We hypothesized that increasing the outbound resistance of the appropriate synapse from $50k\Omega$ may solve the problem. However, in our experiments increasing the resistance simply dampened the signal of the postsynaptic cell altogether whereas any less resistance maintained the state of our original problem. If time allows, we hope to debug this circuit.
+
+\appendix
+
+\chapter{Differential Equation Analysis}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.7\textwidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{fastFast_nullc.png}
+	\caption{$I_{ext}=0$ nullclines}
+\end{subfigure}
+\begin{subfigure}{0.7\textwidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{fastFast.png}
+	\caption{$I_{ext}=0$ action potential}
+\end{subfigure}
+	\caption{V-nullcline (Red) and n-nullcline (Green) for $I_{ext}$ on and off of simple constant $h$ model, with associated action potentials}
+	\label{fig:first}
+\end{figure}
+
+In Figure \ref{fig:first}, we see the result of the Fitzhugh-Nagumo approximation. We can see that there are three potential intersections of the nullclines (two are present in the bottom left but difficult to visualize due to their close proximity), implying that there are excited and relaxed fixed points. If one looks closely at the vector field, the excited equilibrium (upper-right) appears to be attracting, and in the lower-left one equilibrium seems to be attracting while the other is a saddle. We'll call the one that is attracting in the lower-left the rest equilibrium, since it should correspond to the action potential going to rest. We also see that the action potential looks qualitatively different than it does in the unsimplified H-H model. The model seems less than ideal, but is a good initial step. 
+
+We could treat $n$ and $h$ as bifurcation parameters. For example, we can use our physical intuition to consider the effects of increasing $n$ and decreasing $h$. Evidently, increasing $n$ corresponds to activation of K$^+$ conductance and deactivation of Na$^+$ conductance. As a result, we could predict the disappearance of the fixed point that corresponds to an excited state. Indeed, one can show that there is a saddle node bifurcation in this scenario resulting in the disappearance of the saddle and excited fixed points.\cite{keener}.
 
 \bibliography{phy365.bib}
 \bibliographystyle{plain}
