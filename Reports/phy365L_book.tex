@@ -1,4 +1,4 @@
-\documentclass[12]{book}
+\documentclass[12]{article}
 
 \usepackage{amssymb,amsmath}
 
@@ -83,11 +83,11 @@ In this project, we construct and study circuits which are meant to model the ac
 
 In particular, we construct three classes of neural circuits to model the following: (1) the electrical behavior of an ordinary and burster neuron at the axon, (2) inhibitory and excitatory synapses, and (3) inhibitory pattern generation. We successfully construct the first two and offer insight into the third.
 
-\chapter{Neurons and Axons}
+\section{Neurons and Axons}
 
-\section{Introduction}
+\subsection{Introduction}
 
-\subsection{Overview}
+\subsubsection{Overview}
 
 The essence of nervous system function is signaling, or transferring information. Signaling is essential for an organism to (1) sense information about its environment, (2) import this information into its brain where it can be processed, and (3) generate a behavioral response.
 
@@ -101,7 +101,7 @@ The part of the neuron responsible for transmitting information from one part of
 
 Neurons exhibit a membrane potential across their plasma membranes which results form the unequal distribution of electrical charge carried by ions on the two sides of the membrane. When an axon is at rest the value of the membrane potential is called the resting potential. In neurons the resting potential is usually in the range of $-40$ to $-90 mV$. Note that membrane potentials are expressed relative to the extracellular fluid. When the membrane potential is less negative than the resting potential, the cell is said to be depolarized; when it is more negative, the cell is hyperpolarized.
 
-Action potentials are fundamental to a neuron's ability to transfer information; however, there are additional aspects of its electrical properties which shape neuronal input and output. For example, some neurons that fire spontaneously in the absence of external simulation do not fire at regular intervals, but instead generate bursts of action potentials that are separated by the hyperpolarizations of the membrane. Such cells are terms "bursting" neurons \cite{levitan2015neuron}.
+Action potentials are fundamental to a neuron's ability to transfer information; however, action potentials are not all alike and particular electrical properties and features may distinguish neuronal input and output. For example, some neurons that fire spontaneously in the absence of external simulation do not fire at regular intervals, but instead generate bursts of action potentials that are separated by the hyperpolarizations of the membrane. Such cells are terms "bursting" neurons \cite{levitan2015neuron}.
 
 These bursts are used in at least two known ways \cite{levitan2015neuron}:
 
@@ -110,11 +110,11 @@ These bursts are used in at least two known ways \cite{levitan2015neuron}:
 \item To secrete neurohormones. Neurohormones are signaling molecules that are released by specialized neurons and transported by the circulatory system to regulate physiology and behavior. For example, neurons located in the hypothalamic region of the mammalian brain individually contain either vasopressin or oxyocin. These hormones control water retention and lactation, respectively. Interestingly, it appears that the bursting pattern is more effective than a steady pacing pattern of firing as a stimulus to the intracellular mechanism which generates peptide release.
 \end{enumerate}
 
-\subsection{Mathematical Modeling}
+\subsubsection{Mathematical Modeling}
 
 Alan Lloyd Hodgkin and Andrew Huxley, in 1963, won the Nobel Prize in Physiology and Medicine for their work developing the Hodgkin-Huxley (H-H) equations, equations that modeled to incredible accuracy the propagation of action potentials through a squid axon. 
 
-In our project, we seek to capture the important qualitative behaviors of the axon system using electronics. Before speaking of electronics, it is prudent to develop differential equations which simplify the H-H model.
+In our project, we seek to capture the important qualitative behaviors of the axon system using electronics. Before speaking of electronics, it is prudent to analyze differential equations which simplify the H-H model.
 
 The Hodgkin-Huxley model models the cell membrane as a simple circuit. 
 
@@ -147,24 +147,22 @@ where $G_{ion}$ is the conductance of the ionic channels and $E_{ion}$ the corre
 
 The physical meaning of conductance is the probability that the channels that the ions pass through will be considered open, or when the gates that the ions can pass through are all permissive in that particular ion channel. This is dependent on the voltage of the cell membrane. 
 
-Define the following differential equation given in terms of $p \equiv p(V, t)$ which is interpreted as a fraction of open gates, and $a(V), b(V)$ which are functions of voltage to be fit empirically. 
+Hodgkin and Huxley used three variables $m, h, n$, interpreted as functions indicating the fraction of open gates for each class of gates, to model the conductance channels. In particular, they chose to write the conductance $G_{Na}$ and $G_K$ as
+
+\begin{align}
+    G_{Na} &= \bar{G}_{Na}m^3h\\
+    G_{K} &= \bar{G}_{K}n^4
+    \label{eq:gating}
+\end{align}
+
+To define $m,h,n$ they used the following differential equation given which is written in terms of $p \equiv p(V, t)$ and $a(V), b(V)$ which are functions of voltage to be fit empirically:
 
 \begin{align}
     \frac{dp}{dt} = a(V)(1-p) - b(V)p
     \label{eq:dpdt}
 \end{align}
 
-Now, let us consider three separate solutions $p$ to this equation which we term $m, h, n$. 
-
-Hodgkin and Huxley interpreted $m, h, n$ as three different types of gates to model the conductance channels. The conductance $G_{Na}$ and $G_K$ are then modeled as
-
-\begin{align*}
-    G_{Na} &= \bar{G}_{Na}m^3h\\
-    G_{K} &= \bar{G}_{K}n^4
-    \label{eq:gating}
-\end{align*}
-
-where $\bar{G}_i$ are constants.
+where $\bar{G}_i$ are constants. The solutions $m, h, n$ are three separate solutions $p$ each utilizing distinct empirical parameters $a(V), b(V)$.
 
 Hodgkin and Huxley discovered that as they kept the voltage constant, the conductance of the channels $m, h, n$ increased steadily to a maximum value. They used this experimental data to achieve equations for the time step of increase of $p$. Note that solutions to the posed differential equation are exponentials given that Equation \ref{eq:dpdt} is first order differential equation linear in $p$. Hence, we can speak of time constants in the usual sense (reaching $1/e$ of the steady state $t \rightarrow \infty$ value).
 
@@ -200,7 +198,7 @@ The combined system of differential equations is shown in the next section. Furt
 		\label{fig:inf}
 \end{figure}
 
-\subsection{Circuit Modeling} 
+\subsubsection{Circuit Modeling} 
 
 Maeda and Makino \cite{maeda2000pulse} show how to model a neuron using 3 transistors for a FitzHugh-Nagumo type neuron. In the FitzHugh-Nagumo model, one simplifies the Hodgkin-Huxley formulation by replacing the fast Na current of the H-H model with a simplified fast, depolarizing, activation process. Furthermore, one replaces the slow $Na$ inactivation and slow, repolarizing, $K$ current by a single slow inactivation process. By adding one more repolarizing process, modeled by two more transistors, they can produce a neuron with bursting behavior. 
 
@@ -232,7 +230,7 @@ While analyzing a four-dimensional nonlinear system is certainly feasible, it is
 \end{figure}
 
 
-From Equation \ref{eq:time}, it's clear that the time constants, $\tau_i$ vary widely between these equations. For example, for a 20 mV potential, the values are $\tau_m \approx 0.4 ms$, $\tau_h \approx 8 ms$, and $\tau_n \approx 5 ms$. In general, it is true that $\tau_m$ is much smaller than the other time constants. Recall that $\tau_m$ is a measure of the speed with which $m$ converges to its steady state value $m_\infty$. Therefore, it may be a reasonable assumption to assume that $\tau_m$ is so fast compared to the other parameters that $m = m_\infty$. Then, we can either take $n$ or $h$ to be constant which would then give us a two-dimensional nonlinear system. Since $h$ fluctuates over the largest time-scale, we'll take it to be some constant $\bar{h}$. As a result, we have 
+From Equation \ref{eq:time}, it's clear that the time constants, $\tau_i$ may vary widely depending on the empirically fit parameters. For example, for a 20 mV potential, the values are $\tau_m \approx 0.4 ms$, $\tau_h \approx 8 ms$, and $\tau_n \approx 5 ms$. In general, it is true that $\tau_m$ is much smaller than the other time constants. Recall that $\tau_m$ is a measure of the speed with which $m$ converges to its steady state value $m_\infty$. Therefore, it may be a reasonable assumption to assume that $\tau_m$ is so fast compared to the other parameters that $m = m_\infty$. Then, we can either take $n$ or $h$ to be constant which would then give us a two-dimensional nonlinear system. Since $h$ fluctuates over the largest time-scale, we'll take it to be some constant $\bar{h}$. As a result, we have 
 
 \begin{align*}
         C\frac{dV}{dt} &= I_{ext} -\bar{G}_{Na}m_\infty^3\bar{h}(V-E_{Na}) -\bar{G}_{K}n^4(V-E_{K})  -\bar{G}_{L}(V-E_{L}) \\
@@ -241,10 +239,10 @@ From Equation \ref{eq:time}, it's clear that the time constants, $\tau_i$ vary w
 
 The assumption of taking $h$ to be constant can be judged visually in Figure \ref{fig:keen}, borrowed from Keener and Sneyd, which shows values of the unapproximated model\cite{keener}. Indeed, the neurons we construct in this project follow from this approximation.
 
-\section{Circuit 1: A Pulse Type Neuron}
+\subsection{Circuit 1: A Pulse Type Neuron}
 \label{sec:pulse-neuron}
 
-\subsection{Theory}
+\subsubsection{Theory}
  
  We begin by considering a circuit with the following structure
  
@@ -323,7 +321,7 @@ In the context of our circuit, we can then describe the expected behavior visual
  
 Hence, Figure \ref{fig:action-explained} shows that, based upon our switch analysis we have the following states: (1) both switches are off and the circuit evolves towards $2V$, (2) the $Na$ switch is opened which is associated with a short time constant and equilibrium of $4.96 V$, (3) the leak current switch is opened evolving the circuit towards $1.6 V$, (4) when the potential falls below the threshold of the Na gate (near $2V$), the Na gates closes and the circuit continues towards rest (briefly falling below the rest potential). The fourth stage gives a "knee" to the action potential because the closing of the Na gate removes a source of opposing current to the leak. The process may then restart after the cell has reached rest.
 
-\subsection{Results and Discussion}
+\subsubsection{Results and Discussion}
 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-pulse}, finding no need for modification\footnote{However, recall that instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.}. Our circuit exhibited the expected pattern of an action potential in  a pulse type neuron.
 
@@ -340,23 +338,24 @@ Furthermore, we see that the action potential reaches its maximum at approximate
 
 We see that we have captured the essential details of the mathematical action potential shown in Figure \ref{fig:keen}. For example, looking closely, we see the "knee" along the fast discharge when the potential falls below the equilibrium associated with both switches being off, because the equilibrium shifts to being rest. 
 
-\section{Circuit 2: A Pulse Type Neuron with Burst}
+\subsection{Circuit 2: A Pulse Type Neuron with Burst}
 
-\subsection{Theory}
+\subsubsection{Theory}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{burster_heart_cell}	
 \caption{Burster Heart Cell}
+\label{fig:burst}
 \end{figure}
 
-The primary modification created for this circuit as opposed to the pulse type is a burster component (the subcircuit who intersects with the top node at the third dotted intersection from the right). When the top node reaches sufficient voltage, the top transistor of this subcircuit is opened. Then, the second transistor opens after a time dictated by the time constant associated with the capacitor within this subcircuit. Hence, the fast current can flow out through the $300 \Omega$ resistor. Nevertheless, after enough voltage has been drained the top transistor closes and the fast current begins to recharge the top node again, repeating the process. This creates the bursts we hope to model.
+The primary modification created for this circuit as opposed to the pulse type is a burster component (circled in Figure \ref{fig:burst}). When the top node reaches sufficient voltage, the top transistor of this subcircuit is opened. Then, the second transistor opens after a time dictated by the time constant associated with the capacitor within this subcircuit. Hence, the fast current can flow out through the $300 \Omega$ resistor. Nevertheless, after enough voltage has been drained the top transistor closes and the fast current begins to recharge the top node again, repeating the process. This creates the bursts we hope to model.
 
 Throughout this process the $1 \mu F$ capacitor continues to charge because the frequency of bursts is below the cutoff frequency defined by $R = 10k \Omega, C = 0.2 \mu F$ (approximately $1/RC = 200 Hz$). Hence, once this capacitor charges and the adjacent transistor opens voltage rapidly drains through the $2 \Omega$ resistor resulting in the depolarization of the action potential, per usual. One comparison to note with the pulse type circuit is that this $2 \Omega$ resistor was $600 \Omega$ in the previous circuit. Hence, we expect a steeper, near-instantaneous drain at the end of the action potential. Furthermore, the fast inward current path previously had a $1k \Omega$ resistor which is now simply a short in this circuit. Hence, "fast" charging occurs theoretically instantaneously in this circuit.
 
 Referring back to Figure \ref{fig:action-explained}, we expect the fast charge and fast discharge to appear as a rectangular "window". This then allows for the top transistor of the burster circuit to open and close in close temporal proximity to the fast charge and discharge, creating a window for bursting.
 
-\subsection{Results and Discussion}
+\subsubsection{Results and Discussion}
 
 We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-burst}, finding no need for modification.
 
@@ -369,11 +368,11 @@ We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-b
 
 As anticipated, we see the usual action potential magnitudes associated with the pulse type neuron ($4V$ maximum, $1V$ for the slow charge peak). However, we also see oscillatory "bursting" behavior during the fast charge phase.
 
-\chapter{Synapses}
+\section{Synapses}
 
-\section{Introduction}
+\subsection{Introduction}
 
-\subsection{Overview}
+\subsubsection{Overview}
 
 Information transfer from one part of the nervous system to another involves a highly specialized structure of the neuron known as the synapse. There exist two types of synapses: chemical synapses and electrical synapses. 
 
@@ -385,9 +384,9 @@ A presynaptic neuron may increase the probability of an action potential occurri
 
 On the opposite end, neurotransmitters such as GABA can cause hyper-polarization in the postsynaptic cell, a phenomenon known as an inhibitory postsynaptic potential (IPSP).
 
-\section{Circuit 1: Excitatory Synapse}
+\subsection{Circuit 1: Excitatory Synapse}
 
-\subsection{Theory}
+\subsubsection{Theory}
 
 \begin{figure}[h]
 \centering
@@ -398,27 +397,28 @@ On the opposite end, neurotransmitters such as GABA can cause hyper-polarization
 
 As usual, instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.
 
-In the circuit diagram above (\ref{fig:epsp}), we have two pulse type neurons from the first chapter connected by a synapse subcircuit. However, we have the important modification that a current source only exists within the presynaptic cell. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one.  
+In the circuit diagram (Figure \ref{fig:epsp}), we have two pulse type neurons from the first chapter connected by a synapse subcircuit. However, we have the important modification that a current source only exists within the presynaptic cell. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one.  
 
 When the current on the top node of the synapse reaches sufficient voltage, the synapse's transistors open. This then allows current to flow out into the postsynaptic cell due to the $2.5V$ source in the synapse. We see that the voltage on the top node has dynamics described by the RC circuit with $R=200 k \Omega, C = 0.01 \mu F$. Hence, this dynamic allows for action potentials to not be excited in the postsynaptic cell for every action potential within the presynaptic cell given that the time constant for the RC circuit is sufficiently great compared to the frequency of action potentials. When current flows into the postsynaptic cell, it reduces the voltage on the top node of the synapse closing the transistors thereby restarting the charging of the capacitor for the RC circuit.
 
-\subsection{Results and Discussion}
+\subsubsection{Results and Discussion}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{excitatory.jpg}
 \caption{Oscilloscope for Excitatory Synapse}
+\label{fig:res-exc}
 \end{figure}
 
 In order to see the expected behavior we had to modify the resistor to be $200 \Omega$ from $1 M \Omega$. This significantly increases the "synaptic strength" so as to allow more current to flow towards the postsynaptic cell. In particular, this change directly allows for more current to flow through the synapse transistor base allowing it to open more frequently and rapidly, thereby allowing the potential within the synapse to transfer more signal to the postsynaptic cell. This was necessary because previously the postsynaptic cell exhibited no action potentials before the change.
 
-After this change, we then see that the action potentials of the presynaptic cell (blue), which has a current source, are able to generate action potentials in the postsynaptic cell (yellow) which does not have a current source.  
+After this change, we then see that (in Figure \ref{fig:res-exc}) the action potentials of the presynaptic cell (blue), which has a current source, are able to generate action potentials in the postsynaptic cell (yellow) which does not have a current source.  
 
 The magnitude of the action potential remained roughly $4V$ as for the pulse type neurons of the first chapter and similarly for the slow charge and depolarization magnitudes.
 
-\section{Circuit 2: Inhibitory Synapse}
+\subsection{Circuit 2: Inhibitory Synapse}
 
-\subsection{Theory}
+\subsubsection{Theory}
 
 \begin{figure}[h]
 \centering
@@ -431,27 +431,35 @@ As usual, instead of applying a constant current source, we added a $200k\Omega$
 
 The diagram (\ref{fig:ipsp}) shows two pulse type neurons from the first chapter connected by a synapse subcircuit. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one. When the current on the top node of the synapse reaches sufficient voltage, the synapse's transistor opens. This then allows current to flow out of the postsynaptic cell due to the $-0.4V$ source in the synapse. We see that the voltage on the top node has dynamics described by the RC circuit with $R=500 k \Omega, C = 0.1 \mu F$. Hence, this dynamic allows for action potentials to not be inhibited completely in the postsynaptic cell given that the time constant for the RC circuit is sufficiently great compared to the frequency of action potentials. When current flows from the postsynaptic cell into the synapse it reduces the voltage on the top node thereby restarting the charging of the capacitor for the RC circuit.
 
-\subsection{Results and Discussion}
+\subsubsection{Results and Discussion}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{inhibitory.jpg}	
 \caption{Oscilloscope for Inhibitory Synapse}
+\label{fig:res-inhi}
 \end{figure}
 
 In order to see the expected behavior we had to modify the resistor which flows out of the synapse towards the postsynaptic cell to be $39k \Omega$ from $2k \Omega$. This decreases the "synaptic strength" so as to reduce the current which damps the postsynaptic cell. This was necessary because previously the postsynaptic cell exhibited no action potentials. For the same reason, we reduced the damping voltage within the synapse to be $0.2 V$. 
 
 Furthermore, we tuned the $0.4 V$ voltage source within each cell to be $0.36 V$ which reduces depolarization for each of the cells. 
 
-After this change, we then see that the action potentials of the presynaptic cell (blue), which has a current source, occasionally prevent action potentials in the postsynaptic cell (yellow) which also has a current source, as expected. When the synapse is disconnected, the cells fire similarly each exhibiting regular action potentials, also as expected.
+After this change, we then see that (in Figure \ref{fig:res-inhi}) the action potentials of the presynaptic cell (blue), which has a current source, occasionally prevent action potentials in the postsynaptic cell (yellow) which also has a current source, as expected. When the synapse is disconnected, the cells fire similarly each exhibiting regular action potentials, also as expected.
 
 The magnitude of the action potential remained roughly $4V$ as for the pulse type neurons of the first chapter and similarly for the slow charge and depolarization magnitudes. 
 
-\chapter{Central Pattern Generators}
+\section{Central Pattern Generators}
 
-\section{Introduction}
+\subsection{Introduction}
 
-\subsection{Overview}
+\subsubsection{Overview}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{ipsp.png}	
+\caption{p. 461 of \cite{levitan2015neuron}}
+\label{fig:pat}
+\end{figure}
 
 The goal of the circuit in this chapter is to connect two neuron cells in a way such that they fire out of phase with one another.
 
@@ -459,17 +467,11 @@ Many animal behaviors, such as walking or swimming, require the rhythmic contrac
 
 The very simplest circuit that can generate alternating contraction and relaxation in two different muscles consists of only two neurons. Each neurons makes an inhibitory synapse with the other. For this behavior to exist, it is necessary that after the membrane potential of the cell has been hyper-polarized for a short period of time, the cell becomes more excitable than usual. When the membrane is then allowed to return toward its normal resting potential, one or more action potentials may result. This behavior is known as "post-inhibitory rebound" Some explanations for such behavior include inward current such as a voltage-dependent sodium current or a nonselective cation current called the H-current.
 
-An action potential in an upswing neuron generates an inhibitory postsynaptic potential (IPSP) in a downswing neuron. Because of post-inhibitory rebound, the downswing neuron generates an action potential at the end of the IPSP. This in turn triggers an IPSP in the upswing neuron. This upswing neuron then fires faster than the next approaching action potential of the other neuron as a result of inhibitory rebound; hence, this neuron can send signal to the synapse rapidly enough to create the response that shorts the other neuron.
+An action potential in an upswing neuron generates an inhibitory postsynaptic potential (IPSP) in a downswing neuron. Because of post-inhibitory rebound, the downswing neuron generates an action potential at the end of the IPSP. This in turn triggers an IPSP in the upswing neuron. This upswing neuron then fires faster than the next approaching action potential of the other neuron as a result of inhibitory rebound; hence, this neuron can send signal to the synapse rapidly enough to create the response that shorts the other neuron. We see this behavior diagrammed in Figure \ref{fig:pat}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{ipsp.png}	
-\caption{p. 461 of \cite{levitan2015neuron}}
-\end{figure}
+\subsection{Circuit: Inhibitory Pattern Generation}
 
-\section{Circuit: Inhibitory Pattern Generation}
-
-\subsection{Theory}
+\subsubsection{Theory}
 
 \begin{figure}[h]
 \centering
@@ -482,7 +484,7 @@ Here, we consider the circuit in Figure \ref{fig:pattern}. However, instead of u
 
 In the previous chapter, we saw a circuit with a single diode driving current from one neuronal cell (presynaptic) through an inhibitory synapse to another neuronal cell (postsynaptic). This created an IPSP inhibiting action potentials in the postsynaptic cell. We see that the circuit of this section primarily differs from the one of the previous chapter in that we have two inhibitory synapses which allow the cells to play the role of both postsynaptic and presynaptic with respect to the synapses i.e. generating an IPSP through one synapse and receiving an IPSP through the other. Hence, we expect the cells to fire out of phase with one another.
 
-\subsection{Results and Discussion}
+\subsubsection{Results and Discussion}
 
 We were unable to construct a circuit which displayed the expected pattern. Instead, our pattern appeared as if the two neurons were behaving independently i.e. without the synchronization of pattern generation. As discussed, an important requirement for synchronization is that if one neuron inhibits a second neuron, this second neuron must "rebound" quickly enough to have an action potential (thereby sending a signal to the synapse) before the first engages in another action potential. Hence, we hypothesized that increasing the outbound resistance of the appropriate synapse from $50k\Omega$ may solve the problem, allowing for current to flow more rapidly towards the synapse. However, in our experiments increasing the resistance simply dampened the signal of the postsynaptic cell altogether whereas any less resistance maintained the state of our original problem. We hope to debug this circuit further in the future through fine tuning of the parameters of the synapses.
 
@@ -495,7 +497,7 @@ We were unable to construct a circuit which displayed the expected pattern. Inst
 
 \appendix
 
-\chapter{Differential Equation Analysis}
+\section{Differential Equation Analysis}
 
 \begin{figure}[h]
 \centering
