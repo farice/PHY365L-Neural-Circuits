@@ -225,7 +225,7 @@ While analyzing a four-dimensional nonlinear system is certainly feasible, it is
 \begin{subfigure}{.5\textwidth}
 	\centering
 	\includegraphics[height=5cm]{keener2.png}
-	\caption{Action Potential. We can see the connection with Figure \ref{fig:action-explained}. For example, after the discharge we see a "knee" which extends below the rest potential.}
+	\caption{Action Potential. We can see the connection with Figure \ref{fig:action-explained}. For example, after the discharge we see a "knee" along the fast discharge when the potential falls below the equilibrium associated with both switches being off ($2V$), because the equilibrium shifts to being rest.}
 \end{subfigure}
 	\caption{Dynamics of H-H model Without Approximation on Shared Time-Scale (ms)}
 	\label{fig:keen}
@@ -315,9 +315,13 @@ Therefore, by modeling our circuit in terms of changes in voltage equilibria ind
 In the context of our circuit, we can then describe the expected behavior visually below.
 
 \begin{figure}	
+\centering
+\includegraphics[width=0.7\textwidth]{potential_diagram}
+\caption{The exponentials associated with each configuration of switches approach an asymptote.}
 \label{fig:action-explained}
 \end{figure}
  
+Hence, Figure \ref{fig:action-explained} shows that, based upon our switch analysis we have the following states: (1) both switches are off and the circuit evolves towards $2V$, (2) the $Na$ switch is opened which is associated with a short time constant and equilibrium of $4.96 V$, (3) the leak current switch is opened evolving the circuit towards $1.6 V$, (4) when the potential falls below the threshold of the Na gate (near $2V$), the Na gates closes and the circuit continues towards rest (briefly falling below the rest potential). The fourth stage gives a "knee" to the action potential because the closing of the Na gate removes a source of opposing current to the leak. The process may then restart after the cell has reached rest.
 
 \subsection{Results and Discussion}
 
@@ -334,7 +338,7 @@ From the Figure \ref{fig:pulse}, we see that the slow repolarization current (as
 
 Furthermore, we see that the action potential reaches its maximum at approximately $4 V$, falling short of the theoretical prediction of $4.95V$. This likely indicates that the depolarizing current is activated from switch $B$ before the $1 \mu F$ capacitor is fully charged. Nevertheless, we do not wish to reduce this time constant because we would then activate the fast current prematurely so as to subsume the slow current.
 
-We see that we have captured the essential details of the mathematical action potential shown in Figure \ref{fig:keen}. For example, looking closely, we see the "knee" after the discharge face which extends the potential below the rest potential before returning back to equilibrium. 
+We see that we have captured the essential details of the mathematical action potential shown in Figure \ref{fig:keen}. For example, looking closely, we see the "knee" along the fast discharge when the potential falls below the equilibrium associated with both switches being off, because the equilibrium shifts to being rest. 
 
 \section{Circuit 2: A Pulse Type Neuron with Burst}
 
@@ -442,6 +446,7 @@ Furthermore, we tuned the $0.4 V$ voltage source within each cell to be $0.36 V$
 After this change, we then see that the action potentials of the presynaptic cell (blue), which has a current source, occasionally prevent action potentials in the postsynaptic cell (yellow) which also has a current source, as expected. When the synapse is disconnected, the cells fire similarly each exhibiting regular action potentials, also as expected.
 
 The magnitude of the action potential remained roughly $4V$ as for the pulse type neurons of the first chapter and similarly for the slow charge and depolarization magnitudes. 
+
 \chapter{Central Pattern Generators}
 
 \section{Introduction}
@@ -483,7 +488,7 @@ We were unable to construct a circuit which displayed the expected pattern. Inst
 
 \begin{figure}[h]
 \centering
-\includegraphics{pattern_generation}
+\includegraphics[width=0.7\textwidth]{pattern_generation}
 \caption{The results of our pattern generation circuit was not found to be in correspondence with our theoretical analysis}
 \end{figure}
 
