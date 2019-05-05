@@ -196,7 +196,7 @@ The combined system of differential equations is shown in the next section. Furt
 \begin{figure}[h]
 \centering
 	\includegraphics[height=5cm]{gating.png}
-	\caption{$m_{\infty}$ (blue) and $n_{\infty}$ (orange)}
+	\caption{f$m_{\infty}$ (blue) and $n_{\infty}$ (orange)}
 		\label{fig:inf}
 \end{figure}
 
@@ -225,7 +225,7 @@ While analyzing a four-dimensional nonlinear system is certainly feasible, it is
 \begin{subfigure}{.5\textwidth}
 	\centering
 	\includegraphics[height=5cm]{keener2.png}
-	\caption{Action Potential}
+	\caption{Action Potential. We can see the connection with Figure \ref{fig:action-explained}. For example, after the discharge we see a "knee" which extends below the rest potential.}
 \end{subfigure}
 	\caption{Dynamics of H-H model Without Approximation on Shared Time-Scale (ms)}
 	\label{fig:keen}
@@ -333,6 +333,8 @@ We constructed the circuit faithfully in accordance with Figure \ref{fig:maeda-p
 From the Figure \ref{fig:pulse}, we see that the slow repolarization current (associated with the charging of the $0.5 \mu F$ capacitor) increases the voltage just short of $1 V$ before the fast current opens, falling short of the $2V$ equilibrium theoretical prediction. This is because the transistor which opens the fast current ($A$) is opened before this equilibrium can be reached.
 
 Furthermore, we see that the action potential reaches its maximum at approximately $4 V$, falling short of the theoretical prediction of $4.95V$. This likely indicates that the depolarizing current is activated from switch $B$ before the $1 \mu F$ capacitor is fully charged. Nevertheless, we do not wish to reduce this time constant because we would then activate the fast current prematurely so as to subsume the slow current.
+
+We see that we have captured the essential details of the mathematical action potential shown in Figure \ref{fig:keen}. For example, looking closely, we see the "knee" after the discharge face which extends the potential below the rest potential before returning back to equilibrium. 
 
 \section{Circuit 2: A Pulse Type Neuron with Burst}
 
