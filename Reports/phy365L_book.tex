@@ -81,6 +81,8 @@
 
 In this project, we construct and study circuits which are meant to model the actions potentials of several classes of neurons. We aim to understand the fundamentals of electronics in addition to those of cell and molecular biology of nerve cells.
 
+In particular, we construct three classes of neural circuits to model the following: (1) the electrical behavior of an ordinary and burster neuron at the axon, (2) inhibitory and excitatory synapses, and (3) inhibitory pattern generation. We successfully construct the first two and offer insight into the third.
+
 \chapter{Neurons and Axons}
 
 \section{Introduction}
@@ -344,7 +346,7 @@ Furthermore, we see that the action potential reaches its maximum at approximate
 
 The primary modification created for this circuit as opposed to the pulse type is a burster component (the subcircuit who intersects with the top node at the third dotted intersection from the right). When the top node reaches sufficient voltage, the top transistor of this subcircuit is opened. Then, the second transistor opens after a time dictated by the time constant associated with the capacitor within this subcircuit. Hence, the fast current can flow out through the $300 \Omega$ resistor. Nevertheless, after enough voltage has been drained the top transistor closes and the fast current begins to recharge the top node again, repeating the process. This creates the bursts we hope to model.
 
-Throughout this process the $1 \mu F$ capacitor continues to charge because the frequency of bursts is below the cutoff frequency defined by $R = 10k \Omega, C = 0.2 \mu F$. Hence, once this capacitor charges and the adjacent transistor opens voltage rapidly drains through the $2 \Omega$ resistor resulting in the depolarization of the action potential, per usual. One comparison to note with the pulse type circuit is that this $2 \Omega$ resistor was $600 \Omega$ in the previous circuit. Hence, we expect a steeper, near-instantaneous drain at the end of the action potential. Furthermore, the fast inward current path previously had a $1k \Omega$ resistor which is now simply a short in this circuit. Hence, "fast" charging occurs theoretically instantaneously in this circuit.
+Throughout this process the $1 \mu F$ capacitor continues to charge because the frequency of bursts is below the cutoff frequency defined by $R = 10k \Omega, C = 0.2 \mu F$ (approximately $1/RC = 200 Hz$). Hence, once this capacitor charges and the adjacent transistor opens voltage rapidly drains through the $2 \Omega$ resistor resulting in the depolarization of the action potential, per usual. One comparison to note with the pulse type circuit is that this $2 \Omega$ resistor was $600 \Omega$ in the previous circuit. Hence, we expect a steeper, near-instantaneous drain at the end of the action potential. Furthermore, the fast inward current path previously had a $1k \Omega$ resistor which is now simply a short in this circuit. Hence, "fast" charging occurs theoretically instantaneously in this circuit.
 
 Referring back to Figure \ref{fig:action-explained}, we expect the fast charge and fast discharge to appear as a rectangular "window". This then allows for the top transistor of the burster circuit to open and close in close temporal proximity to the fast charge and discharge, creating a window for bursting.
 
@@ -402,7 +404,7 @@ When the current on the top node of the synapse reaches sufficient voltage, the 
 \caption{Oscilloscope for Excitatory Synapse}
 \end{figure}
 
-In order to see the expected behavior we had to modify the resistor to be $200 \Omega$ from $1 M \Omega$. This significantly increases the "synaptic strength" so as to allow more current to flow towards the postsynaptic cell. This was necessary because previously the postsynaptic cell exhibited no action potentials.
+In order to see the expected behavior we had to modify the resistor to be $200 \Omega$ from $1 M \Omega$. This significantly increases the "synaptic strength" so as to allow more current to flow towards the postsynaptic cell. In particular, this change directly allows for more current to flow through the synapse transistor base allowing it to open more frequently and rapidly, thereby allowing the potential within the synapse to transfer more signal to the postsynaptic cell. This was necessary because previously the postsynaptic cell exhibited no action potentials before the change.
 
 After this change, we then see that the action potentials of the presynaptic cell (blue), which has a current source, are able to generate action potentials in the postsynaptic cell (yellow) which does not have a current source.  
 
@@ -416,11 +418,12 @@ The magnitude of the action potential remained roughly $4V$ as for the pulse typ
 \centering
 \includegraphics[width=\textwidth]{inhibitory_circuit}	
 \caption{IPSP Circuit from \cite{levitan2015neuron}}
+\label{fig:ipsp}
 \end{figure}
 
 As usual, instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.
 
-We see that we have two pulse type neurons from the first chapter connected by a synapse subcircuit. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one. When the current on the top node of the synapse reaches sufficient voltage, the synapse's transistor opens. This then allows current to flow out of the postsynaptic cell due to the $-0.4V$ source in the synapse. We see that the voltage on the top node has dynamics described by the RC circuit with $R=500 k \Omega, C = 0.1 \mu F$. Hence, this dynamic allows for action potentials to not be inhibited completely in the postsynaptic cell given that the time constant for the RC circuit is sufficiently great compared to the frequency of action potentials. When current flows from the postsynaptic cell into the synapse it reduces the voltage on the top node thereby restarting the charging of the capacitor for the RC circuit.
+The diagram (\ref{fig:ipsp}) shows two pulse type neurons from the first chapter connected by a synapse subcircuit. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one. When the current on the top node of the synapse reaches sufficient voltage, the synapse's transistor opens. This then allows current to flow out of the postsynaptic cell due to the $-0.4V$ source in the synapse. We see that the voltage on the top node has dynamics described by the RC circuit with $R=500 k \Omega, C = 0.1 \mu F$. Hence, this dynamic allows for action potentials to not be inhibited completely in the postsynaptic cell given that the time constant for the RC circuit is sufficiently great compared to the frequency of action potentials. When current flows from the postsynaptic cell into the synapse it reduces the voltage on the top node thereby restarting the charging of the capacitor for the RC circuit.
 
 \subsection{Results and Discussion}
 
@@ -449,8 +452,7 @@ Many animal behaviors, such as walking or swimming, require the rhythmic contrac
 
 The very simplest circuit that can generate alternating contraction and relaxation in two different muscles consists of only two neurons. Each neurons makes an inhibitory synapse with the other. For this behavior to exist, it is necessary that after the membrane potential of the cell has been hyper-polarized for a short period of time, the cell becomes more excitable than usual. When the membrane is then allowed to return toward its normal resting potential, one or more action potentials may result. This behavior is known as "post-inhibitory rebound" Some explanations for such behavior include inward current such as a voltage-dependent sodium current or a nonselective cation current called the H-current.
 
-An action potential in an upswing neuron generates an inhibitory postsynaptic potential (IPSP) in a downswing neuron. Because of post-inhibitory rebound, the downswing neuron generates an action potential at the end of the IPSP. This in turn triggers an IPSP in the upswing neuron.
-
+An action potential in an upswing neuron generates an inhibitory postsynaptic potential (IPSP) in a downswing neuron. Because of post-inhibitory rebound, the downswing neuron generates an action potential at the end of the IPSP. This in turn triggers an IPSP in the upswing neuron. This upswing neuron then fires faster than the next approaching action potential of the other neuron as a result of inhibitory rebound; hence, this neuron can send signal to the synapse rapidly enough to create the response that shorts the other neuron.
 
 \begin{figure}[h]
 \centering
@@ -475,7 +477,14 @@ In the previous chapter, we saw a circuit with a single diode driving current fr
 
 \subsection{Results and Discussion}
 
-We were unable to construct a circuit which displayed the expected pattern. Instead, our pattern remained similar to the one in the inhibitory synapse circuit of the previous chapter. This indicates that only one neuronal cell was inhibiting the other, despite the two synapses consisting of equivalent circuits. We hypothesized that increasing the outbound resistance of the appropriate synapse from $50k\Omega$ may solve the problem. However, in our experiments increasing the resistance simply dampened the signal of the postsynaptic cell altogether whereas any less resistance maintained the state of our original problem. If time allows, we hope to debug this circuit.
+We were unable to construct a circuit which displayed the expected pattern. Instead, our pattern appeared as if the two neurons were behaving independently i.e. without the synchronization of pattern generation. As discussed, an important requirement for synchronization is that if one neuron inhibits a second neuron, this second neuron must "rebound" quickly enough to have an action potential (thereby sending a signal to the synapse) before the first engages in another action potential. Hence, we hypothesized that increasing the outbound resistance of the appropriate synapse from $50k\Omega$ may solve the problem, allowing for current to flow more rapidly towards the synapse. However, in our experiments increasing the resistance simply dampened the signal of the postsynaptic cell altogether whereas any less resistance maintained the state of our original problem. We hope to debug this circuit further in the future through fine tuning of the parameters of the synapses.
+
+\begin{figure}[h]
+\centering
+\includegraphics{pattern_generation}
+\caption{The results of our pattern generation circuit was not found to be in correspondence with our theoretical analysis}
+\end{figure}
+
 
 \appendix
 
