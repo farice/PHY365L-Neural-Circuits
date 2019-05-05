@@ -313,6 +313,7 @@ Therefore, by modeling our circuit in terms of changes in voltage equilibria ind
 In the context of our circuit, we can then describe the expected behavior visually below.
 
 \begin{figure}	
+\label{fig:action-explained}
 \end{figure}
  
 
@@ -343,7 +344,9 @@ Furthermore, we see that the action potential reaches its maximum at approximate
 
 The primary modification created for this circuit as opposed to the pulse type is a burster component (the subcircuit who intersects with the top node at the third dotted intersection from the right). When the top node reaches sufficient voltage, the top transistor of this subcircuit is opened. Then, the second transistor opens after a time dictated by the time constant associated with the capacitor within this subcircuit. Hence, the fast current can flow out through the $300 \Omega$ resistor. Nevertheless, after enough voltage has been drained the top transistor closes and the fast current begins to recharge the top node again, repeating the process. This creates the bursts we hope to model.
 
-Throughout this process the $1 \mu F$ capacitor continues to charge because the frequency of bursts is below the cutoff frequency. Hence, once this capacitor charges and the adjacent transistor opens voltage rapidly drains through the $2 \Omega$ resistor resulting in the depolarization of the action potential, per usual. One comparison to note with the pulse type circuit is that this $2 \Omega$ resistor was $600 \Omega$ in the previous circuit. Hence, we expect a steeper drain at the end of the action potential. Furthermore, the fast inward current path previously had a $1k \Omega$ resistor which is now simply a short in this circuit. Hence, "fast" charging occurs more rapidly in this circuit as well.
+Throughout this process the $1 \mu F$ capacitor continues to charge because the frequency of bursts is below the cutoff frequency defined by $R = 10k \Omega, C = 0.2 \mu F$. Hence, once this capacitor charges and the adjacent transistor opens voltage rapidly drains through the $2 \Omega$ resistor resulting in the depolarization of the action potential, per usual. One comparison to note with the pulse type circuit is that this $2 \Omega$ resistor was $600 \Omega$ in the previous circuit. Hence, we expect a steeper, near-instantaneous drain at the end of the action potential. Furthermore, the fast inward current path previously had a $1k \Omega$ resistor which is now simply a short in this circuit. Hence, "fast" charging occurs theoretically instantaneously in this circuit.
+
+Referring back to Figure \ref{fig:action-explained}, we expect the fast charge and fast discharge to appear as a rectangular "window". This then allows for the top transistor of the burster circuit to open and close in close temporal proximity to the fast charge and discharge, creating a window for bursting.
 
 \subsection{Results and Discussion}
 
@@ -382,11 +385,12 @@ On the opposite end, neurotransmitters such as GABA can cause hyper-polarization
 \centering
 \includegraphics[width=\textwidth]{excitatory_circuit}	
 \caption{EPSP Circuit from \cite{levitan2015neuron}}
+\label{fig:epsp}
 \end{figure}
 
 As usual, instead of applying a constant current source, we added a $200k\Omega$ resistor above the $5V$ voltage source.
 
-We see that we have two pulse type neurons from the first chapter connected by a synapse subcircuit. However, we have the important modification that a current source only exists within the presynaptic cell. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one.  
+In the circuit diagram above (\ref{fig:epsp}), we have two pulse type neurons from the first chapter connected by a synapse subcircuit. However, we have the important modification that a current source only exists within the presynaptic cell. A diode is utilized so that current flows in a single direction, from a presynaptic cell to a postsynaptic one.  
 
 When the current on the top node of the synapse reaches sufficient voltage, the synapse's transistors open. This then allows current to flow out into the postsynaptic cell due to the $2.5V$ source in the synapse. We see that the voltage on the top node has dynamics described by the RC circuit with $R=200 k \Omega, C = 0.01 \mu F$. Hence, this dynamic allows for action potentials to not be excited in the postsynaptic cell for every action potential within the presynaptic cell given that the time constant for the RC circuit is sufficiently great compared to the frequency of action potentials. When current flows into the postsynaptic cell, it reduces the voltage on the top node of the synapse closing the transistors thereby restarting the charging of the capacitor for the RC circuit.
 
